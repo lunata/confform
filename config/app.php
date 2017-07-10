@@ -167,15 +167,17 @@ return [
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
+        
+        Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
 
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        Confform\Providers\AppServiceProvider::class,
+        Confform\Providers\AuthServiceProvider::class,
+        // Confform\Providers\BroadcastServiceProvider::class,
+        Confform\Providers\EventServiceProvider::class,
+        Confform\Providers\RouteServiceProvider::class,
 
     ],
 
@@ -226,6 +228,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        'LaravelLocalization' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
     ],
 
 ];

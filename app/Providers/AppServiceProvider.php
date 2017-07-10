@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Confform\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
