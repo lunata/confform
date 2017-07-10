@@ -1,0 +1,71 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Aug 16, 2016, 1:12:18 AM
+    Author     : componavt
+*/
+
+@import url(fonts.css);
+
+.fa-btn {
+    margin-right: 6px;
+}
+
+.navbar-default .navbar-nav > li > a {
+    text-transform: capitalize;
+}
+
+.table-bordered td,
+.table-bordered th {
+    padding: 5px 10px;
+}
+
+.footer {
+    background-color: #f8f8f8;
+    border-top: #e7e7e7 1px solid;
+    font-style: italic;
+    margin-top: 20px;
+    padding: 20px;
+    text-align: center;
+}
+
+.small-form {
+    min-width: 300px;
+    width: 30%;
+}
+
+.corpus-text td:first-child{
+    padding-right: 20px;
+}
+
+.form-group label:first-letter {
+    text-transform: uppercase;
+}
+
+.form-control-sized {
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.table th:first-letter {
+    text-transform: uppercase;    
+}
+
+.warning {
+    color: red;
+}
