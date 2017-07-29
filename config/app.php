@@ -171,6 +171,7 @@ return [
         Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
         Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,   // in DEBUG mode only
 
         /*
          * Application Service Providers...
@@ -236,6 +237,10 @@ return [
         'Sentinel'   => Cartalyst\Sentinel\Laravel\Facades\Sentinel::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+
+        'Debugbar' => Barryvdh\Debugbar\Facade::class, // in DEBUG mode only
+        
+        'User' => Confform\Models\User::class,
     ],
 
 ];

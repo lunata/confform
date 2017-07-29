@@ -1,12 +1,12 @@
                         <li class="dropdown">
                     @if ($user=Sentinel::check())
-                            <?php $user = User::find($user->id);?>
+                            <?php $user = Confform\Models\User::find($user->id);?>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 {{ $user->name }} ({{ $user->rolesNames() }})<span class="caret"></span>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                @if (User::checkAccess('admin'))
+                                @if (Confform\Models\User::checkAccess('admin'))
                                 <li><a href="{{ url('/user') }}"><i class="fa fa-btn fa-user"></i>{{ trans('navigation.users') }}</a></li>
                                 <li><a href="{{ url('/role') }}"><i class="fa fa-btn fa-users"></i>{{ trans('navigation.roles') }}</a></li>
                                 @endif

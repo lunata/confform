@@ -16,7 +16,7 @@ use Mail;
 use Storage;
 use CurlHttp;
 
-//use Barryvdh\Debugbar\Facade as Debugbar;
+use Barryvdh\Debugbar\Facade as Debugbar;
 
 class AuthController extends Controller
 {
@@ -126,10 +126,9 @@ class AuthController extends Controller
         ]);
         $input = $request->all();
         $credentials = [ 'email' => $request->email ];
-
-//        Debugbar::error('not mine Error!');
-//        Debugbar::info($credentials);
-//        exit(0);
+        print '11';
+        Debugbar::error('not mine Error!');
+        Debugbar::info($credentials);
         
         
         if($user = Sentinel::findByCredentials($credentials))

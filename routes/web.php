@@ -21,7 +21,7 @@ Route::group( [ 'prefix' => LaravelLocalization::setLocale(),
 	});
         
         // Вызов страницы регистрации пользователя
-        Route::get('register', 'Auth/Controller@register');   
+        Route::get('register', 'AuthController@register');   
         // Пользователь заполнил форму регистрации и отправил
         Route::post('register', 'AuthController@registerProcess'); 
         // Пользователь получил письмо для активации аккаунта со ссылкой сюда
