@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Redirect;
 use DB;
 use LaravelLocalization;
 
-use Confform\Models\User;
-use Confform\Models\Role;
+use Confform\User;
+use Confform\Role;
 
 class RoleController extends Controller
 {
@@ -22,7 +22,7 @@ class RoleController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:admin,/role/', ['all']);
+        $this->middleware('role:admin,/', ['all']);
     }
 
     /**

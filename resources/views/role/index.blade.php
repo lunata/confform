@@ -9,11 +9,11 @@
         <h2>{{ trans('auth.role_list') }}</h2>
               
         <p>
-        @if (User::checkAccess('corpus.edit'))
+        @if (Confform\User::checkAccess('admin'))
             <a href="{{ LaravelLocalization::localizeURL('/role/create') }}">
         @endif
             {{ trans('messages.create_new_f') }}
-        @if (User::checkAccess('corpus.edit'))
+        @if (Confform\User::checkAccess('admin'))
             </a>
         @endif
         </p>

@@ -64,7 +64,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    //'timezone' => 'UTC',
+    'timezone' => 'Europe/Moscow',
 
     /*
     |--------------------------------------------------------------------------
@@ -240,7 +241,7 @@ return [
 
         'Debugbar' => Barryvdh\Debugbar\Facade::class, // in DEBUG mode only
         
-        'User' => Confform\Models\User::class,
+        'User' => Confform\User::class,
     ],
 
 ];

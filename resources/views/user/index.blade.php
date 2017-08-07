@@ -13,8 +13,7 @@
             <tr>
                 <th>No</th>
                 <th>E-mail</th>
-                <th>{{ trans('auth.first_name') }}</th>
-                <th>{{ trans('auth.last_name') }}</th>
+                <th>{{ trans('auth.name') }}</th>
                 <th>{{ trans('auth.permissions') }}</th>
                 <th>{{ trans('auth.roles') }}</th>
                 <th>{{ trans('auth.last_login') }}</th>
@@ -26,8 +25,7 @@
             <tr>
                 <td>{{ $list_count++ }}</td>
                 <td>{{$user->email}}</td>
-                <td>{{$user->first_name}}</td>
-                <td>{{$user->last_name}}</td>
+                <td>{{$user->name}}</td>
                 <td>{{$user->permissionString()}}</td>
                 <td>{{$user->rolesNames()}}</td>
                 <td>{{$user->last_login}}</td>

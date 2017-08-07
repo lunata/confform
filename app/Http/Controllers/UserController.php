@@ -9,12 +9,15 @@ use Confform\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 use DB;
 use LaravelLocalization;
+use Sentinel;
 
-use Confform\Models\User;
-use Confform\Models\Role;
+use Confform\User;
+use Confform\Role;
 
 class UserController extends Controller
 {
+    protected $dbd = null;
+        
      /**
      * Instantiate a new new controller instance.
      *
@@ -22,7 +25,15 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:admin,/', ['all']);
+//        $this->middleware('role:admin,/', ['all']);
+//        $this->middleware('auth');
+        $this->middleware('perm:user.view,/', ['only'=>['index','view']]);
+        $this->middleware('role:admin,/', ['only'=>['create','store']]);
+        $this->middleware('perm:user.update,/', ['only'=>['edit','update']]);
+        $this->middleware('perm:user.delete,/', ['only'=>['destroy']]);
+        
+        // $this->dbd = getenv('DB_DATABASE');
+        // dd('hello world from __construct()' . $this->dbd);
     }
 
     /**
@@ -92,7 +103,6 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id); 
-        
         $role_values = Role::getList();
         
         $role_value = [];
@@ -109,6 +119,8 @@ class UserController extends Controller
                 $perm_value[] = $perm;
             }
         }
+        
+        $locale = LaravelLocalization::getCurrentLocale();
        
         return view('user.edit')
                   ->with(['user' => $user,
@@ -116,6 +128,7 @@ class UserController extends Controller
                           'role_value' => $role_value,
                           'perm_values' => $perm_values,
                           'perm_value' => $perm_value,
+                          'locale' => $locale
                          ]);
     }
 
@@ -128,14 +141,21 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $user = User::find($id);
+        $prlang = $user->getPrimLang();
+        $adlang = $user->getAddLang();
+        
         $this->validate($request, [
-            'first_name'  => 'required|max:255',
-            'last_name'  => 'max:255',
-            'email'  => 'required|email|max:150',
+//            'first_name_'.$prlang  => 'string|required_without_all:first_name_'.$prlang.',first_name_'.$adlang.'',
+//            'first_name_'.$adlang  => 'string|required_without_all:first_name_'.$prlang.',first_name_'.$adlang.'',
+            'first_name_'.$prlang  => 'required|string|max:191',
+            'last_name_'.$prlang  => 'required|string|max:191',
+            'affil_'.$prlang  => 'required|string|max:255',
+            'email'  => 'required|email|max:191',
         ]);
         
-        $user = User::find($id);
-        $user->fill($request->only('email','first_name','last_name'));
+        $user->fill($request->all());
+
         $user_perms = [];
         if ($request->permissions) {
             foreach ($request->permissions as $p) {
@@ -197,4 +217,55 @@ class UserController extends Controller
                   ->withSuccess($result['message']);
         }
     }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function profile()
+    {
+        $sentinelUser = Sentinel::check(); 
+        if (!$sentinelUser) 
+                return Redirect::to('/user/')
+                               ->withErrors(\Lang::get('messages.permission_denied'));
+        
+        $user = User::find($sentinelUser->id);
+        
+        $locale = LaravelLocalization::getCurrentLocale();
+       
+        return view('user.edit_profile')
+                  ->with(['user' => $user,
+                          'locale' => $locale
+                         ]);
+    }
+    
+    public function profileUpdate(Request $request)
+    {
+        $sentinelUser = Sentinel::check(); 
+        if (!$sentinelUser) 
+                return Redirect::to('/user/')
+                               ->withErrors(\Lang::get('messages.permission_denied'));
+        
+        $user = User::find($sentinelUser->id);
+        
+        $prlang = $user->getPrimLang();
+        $adlang = $user->getAddLang();
+        
+        $this->validate($request, [
+            'first_name_'.$prlang  => 'required|string|max:191',
+            'last_name_'.$prlang  => 'required|string|max:191',
+            'affil_'.$prlang  => 'required|string|max:255',
+            'email'  => 'required|email|max:191',
+        ]);
+        
+        $user->fill($request->all());
+
+        $user->save();
+        
+        return Redirect::to('/')
+            ->withSuccess(\Lang::get('messages.updated_success'));        
+    }
+
 }

@@ -60,6 +60,10 @@ class Kernel extends HttpKernel
         'localize' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class,
         'localizationRedirect' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class,
         'localeSessionRedirect' => \Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class,
-        'localeViewPath' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class
+        'localeViewPath' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class,
+        
+        'perm' => \Confform\Http\Middleware\CheckPermission::class,
+        'role' => \Confform\Http\Middleware\CheckRole::class,
+        
     ];
 }

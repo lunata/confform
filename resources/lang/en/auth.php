@@ -18,8 +18,6 @@ return [
     'confirm' => 'Confirm',
     'failed' => 'These credentials do not match our records.',
 
-    'first_name' => 'First name',
-    'last_name' => 'Last name',
     'last_login' => 'last login',
     'login' => 'Login',
     'name' => 'name',

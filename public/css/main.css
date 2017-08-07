@@ -69,3 +69,7 @@ and open the template in the editor.
 .warning {
     color: red;
 }
+
+input[type=checkbox] + label {
+    font-weight: normal;
+}

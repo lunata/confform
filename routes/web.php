@@ -17,8 +17,8 @@ Route::group( [ 'prefix' => LaravelLocalization::setLocale(),
     function()
     {
         Route::get('/', function () {
-	    return view('welcome');
-	});
+            return view('welcome');
+        });
         
         // Вызов страницы регистрации пользователя
         Route::get('register', 'AuthController@register');   
@@ -27,7 +27,7 @@ Route::group( [ 'prefix' => LaravelLocalization::setLocale(),
         // Пользователь получил письмо для активации аккаунта со ссылкой сюда
         Route::get('activate/{id}/{code}', 'AuthController@activate');
         // Вызов страницы авторизации
-        Route::get('login', 'AuthController@login');
+        Route::get('login', ['uses'=>'AuthController@login', 'as'=>'login']);
         // Пользователь заполнил форму авторизации и отправил
         Route::post('login', 'AuthController@loginProcess');
         // Выход пользователя из системы
@@ -45,6 +45,19 @@ Route::group( [ 'prefix' => LaravelLocalization::setLocale(),
         // о том, что письмо отправлено и надо заглянуть в почтовый ящик.
         Route::get('wait', 'AuthController@wait');
         
+        Route::get('profile', ['uses'=> 'UserController@profile',
+                                     'as' => 'profile']);
+        Route::post('profile', ['uses'=> 'UserController@profileUpdate',
+                                     'as' => 'profile.update']);
+
+        Route::resource('role', 'RoleController',
+                       ['names' => ['update' => 'role.update',
+                                    'store' => 'role.store',
+                                    'destroy' => 'role.destroy']]);
+                
+        Route::resource('user', 'UserController',
+                       ['names' => ['update' => 'user.update',
+                                    'destroy' => 'user.destroy']]);       
     }
 );
 

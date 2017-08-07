@@ -16,7 +16,10 @@ use Mail;
 use Storage;
 use CurlHttp;
 
+use LaravelLocalization;
 use Barryvdh\Debugbar\Facade as Debugbar;
+
+use Confform\User;
 
 class AuthController extends Controller
 {
@@ -38,7 +41,19 @@ class AuthController extends Controller
      */
     public function register()
     {
-        return view('auth.register');//->with('errors',$errors);
+        $locale = LaravelLocalization::getCurrentLocale();
+
+        $user=new User;
+        $prim_lang = $user->getPrimLang();
+        $add_lang = $user->getAddLang();
+        $translated_fields = $user->getTranslatedFields();
+        
+        return view('auth.register')
+                ->with(['prim_lang'=>$prim_lang,
+                        'add_lang'=>$add_lang,
+                        'locale' => $locale,
+                        'translated_fields' => $translated_fields
+                ]);
     }
 
 
@@ -117,18 +132,23 @@ class AuthController extends Controller
      */
     public function registerProcess(Request $request)
     {
+        $user = new User;
+        $prlang = $user->getPrimLang();
+        $adlang = $user->getAddLang();
+        
         $this->validate($request, [
-            'email' => 'required|email',
+            'first_name_'.$prlang  => 'required|string|max:191',
+            'last_name_'.$prlang  => 'required|string|max:191',
+            'affil_'.$prlang  => 'required|string|max:255',
+            'email'  => 'required|email|max:191',
             'password' => 'required',
             'password_confirm' => 'required|same:password',
-            'first_name' => 'required',
-            'last_name' => 'required',
         ]);
+        
         $input = $request->all();
         $credentials = [ 'email' => $request->email ];
-        print '11';
-        Debugbar::error('not mine Error!');
-        Debugbar::info($credentials);
+//        Debugbar::error('not mine Error!');
+//        Debugbar::info($credentials);
         
         
         if($user = Sentinel::findByCredentials($credentials))
@@ -137,7 +157,6 @@ class AuthController extends Controller
 //print 'This email is registered already.';
 //exit(0);
             return Redirect::to('register')
-                //view('auth.register')
                 ->withErrors(\Lang::get('error.email_is_registered'));
         }
         
@@ -161,6 +180,15 @@ class AuthController extends Controller
 
             $role = Sentinel::findRoleBySlug('user');
             $role->users()->attach($sentuser);
+            
+            $user=User::find($sentuser->id);
+            $prlang = $user->getPrimLang();
+            $adlang = $user->getAddLang();
+            
+            foreach ($user->getTranslatedFields() as $field) {
+                $user->{$field.'_'.$prlang} = $request->{$field.'_'.$prlang};
+            }
+            $user->save();
 
             return Redirect::to('login')
                 ->withSuccess(\Lang::get('auth.account_is_created'))
@@ -294,7 +322,7 @@ class AuthController extends Controller
     public function logoutuser()
     {
         Sentinel::logout();
-        return Redirect::intended('/');
+        return Redirect::to('/');
     }
 
 }
