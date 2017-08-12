@@ -50,6 +50,9 @@ Route::group( [ 'prefix' => LaravelLocalization::setLocale(),
         Route::post('profile', ['uses'=> 'UserController@profileUpdate',
                                      'as' => 'profile.update']);
 
+        Route::get('user/city_list', 'UserController@citiesList');
+        Route::get('user/region_list', 'UserController@regionsList');
+
         Route::resource('role', 'RoleController',
                        ['names' => ['update' => 'role.update',
                                     'store' => 'role.store',

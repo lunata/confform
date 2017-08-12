@@ -10,9 +10,13 @@ use Illuminate\Support\Facades\Redirect;
 use DB;
 use LaravelLocalization;
 use Sentinel;
+use Response;
 
-use Confform\User;
+use Confform\City;
+use Confform\Country;
+use Confform\Region;
 use Confform\Role;
+use Confform\User;
 
 class UserController extends Controller
 {
@@ -121,9 +125,23 @@ class UserController extends Controller
         }
         
         $locale = LaravelLocalization::getCurrentLocale();
+        $country_values = [NULL => ''] + Country::getList();
+        $region_values = [NULL => ''] + Region::getList();
+        $city_values = [NULL => ''] + City::getList();
+        
+        if ($user->city && $user->city->region_id) {
+            $region_id = $user->city->region_id;
+        } else {
+            $region_id = null;
+        }
+       
        
         return view('user.edit')
                   ->with(['user' => $user,
+                          'city_values' => $city_values,
+                          'country_values' => $country_values,
+                          'region_values' => $region_values,
+                          'region_id' => $region_id,
                           'role_values' => $role_values,
                           'role_value' => $role_value,
                           'perm_values' => $perm_values,
@@ -152,8 +170,9 @@ class UserController extends Controller
             'last_name_'.$prlang  => 'required|string|max:191',
             'affil_'.$prlang  => 'required|string|max:255',
             'email'  => 'required|email|max:191',
+            'country_id' => 'required|integer',
+            'city_id' => 'required|integer'
         ]);
-        
         $user->fill($request->all());
 
         $user_perms = [];
@@ -234,9 +253,22 @@ class UserController extends Controller
         $user = User::find($sentinelUser->id);
         
         $locale = LaravelLocalization::getCurrentLocale();
+        $country_values = [NULL => ''] + Country::getList();
+        $region_values = [NULL => ''] + Region::getList();
+        $city_values = [NULL => ''] + City::getList();
+        
+        if ($user->city->region_id) {
+            $region_id = $user->city->region_id;
+        } else {
+            $region_id = null;
+        }
        
         return view('user.edit_profile')
                   ->with(['user' => $user,
+                          'city_values' => $city_values,
+                          'country_values' => $country_values,
+                          'region_values' => $region_values,
+                          'region_id' => $region_id,
                           'locale' => $locale
                          ]);
     }
@@ -257,15 +289,77 @@ class UserController extends Controller
             'first_name_'.$prlang  => 'required|string|max:191',
             'last_name_'.$prlang  => 'required|string|max:191',
             'affil_'.$prlang  => 'required|string|max:255',
-            'email'  => 'required|email|max:191',
+//            'email'  => 'required|email|max:191',
+            'country_id' => 'required|integer',
+            'city_id' => 'required|integer'
         ]);
-        
         $user->fill($request->all());
 
         $user->save();
+//dd($request->all());        
         
         return Redirect::to('/')
             ->withSuccess(\Lang::get('messages.updated_success'));        
+    }
+
+    /**
+     * Gets list of cities for drop down list in JSON format
+     * Test url: /user/city_list?country_id=159&region_id=
+     * 
+     * @return JSON response
+     */
+    public function citiesList(Request $request)
+    {
+        $locale = LaravelLocalization::getCurrentLocale();
+        
+        $search_name = '%'.$request->input('q').'%';
+        $country_id = (int)$request->input('country_id');
+        $region_id = (int)$request->input('region_id');
+        $field_name = 'name_'.$locale;
+        
+        $all_cities = [];
+        $cities = City::where('country_id',$country_id)
+                       ->where($field_name,'like', $search_name);
+        
+        if ($region_id) {
+            $cities = $cities -> where('region_id',$region_id);
+        }
+        
+        $cities = $cities ->orderBy($field_name)->get();
+        
+        foreach ($cities as $city) {
+            $all_cities[]=['id'  => $city->id, 
+                           'text'=> $city->{$field_name}];
+        }  
+
+        return Response::json($all_cities);
+    }
+
+    /**
+     * Gets list of regions for drop down list in JSON format
+     * Test url: /user/region_list?country_id=159
+     * 
+     * @return JSON response
+     */
+    public function regionsList(Request $request)
+    {
+        $locale = LaravelLocalization::getCurrentLocale();
+        
+        $search_name = '%'.$request->input('q').'%';
+        $country_id = (int)$request->input('country_id');
+        $field_name = 'name_'.$locale;
+        
+        $all_regions = [];
+        $regions = Region::where('country_id',$country_id)
+                       ->where($field_name,'like', $search_name)
+                       ->orderBy($field_name)->get();
+        
+        foreach ($regions as $region) {
+            $all_regions[]=['id'  => $region->id, 
+                            'text'=> $region->{$field_name}];
+        }  
+
+        return Response::json($all_regions);
     }
 
 }

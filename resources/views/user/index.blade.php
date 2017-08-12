@@ -14,6 +14,7 @@
                 <th>No</th>
                 <th>E-mail</th>
                 <th>{{ trans('auth.name') }}</th>
+                <th>{{ trans('user.city') }}</th>
                 <th>{{ trans('auth.permissions') }}</th>
                 <th>{{ trans('auth.roles') }}</th>
                 <th>{{ trans('auth.last_login') }}</th>
@@ -26,6 +27,7 @@
                 <td>{{ $list_count++ }}</td>
                 <td>{{$user->email}}</td>
                 <td>{{$user->name}}</td>
+                <td>{{$user->place}}</td>
                 <td>{{$user->permissionString()}}</td>
                 <td>{{$user->rolesNames()}}</td>
                 <td>{{$user->last_login}}</td>

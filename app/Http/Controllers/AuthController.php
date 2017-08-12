@@ -19,6 +19,7 @@ use CurlHttp;
 use LaravelLocalization;
 use Barryvdh\Debugbar\Facade as Debugbar;
 
+use Confform\Country;
 use Confform\User;
 
 class AuthController extends Controller
@@ -48,10 +49,13 @@ class AuthController extends Controller
         $add_lang = $user->getAddLang();
         $translated_fields = $user->getTranslatedFields();
         
+        $country_values = [NULL => ''] + Country::getList();
+
         return view('auth.register')
                 ->with(['prim_lang'=>$prim_lang,
                         'add_lang'=>$add_lang,
                         'locale' => $locale,
+                        'country_values' => $country_values,
                         'translated_fields' => $translated_fields
                 ]);
     }
@@ -143,6 +147,8 @@ class AuthController extends Controller
             'email'  => 'required|email|max:191',
             'password' => 'required',
             'password_confirm' => 'required|same:password',
+            'country_id' => 'required|integer',
+            'city_id' => 'required|integer'
         ]);
         
         $input = $request->all();

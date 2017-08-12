@@ -85,10 +85,10 @@ class Role extends EloquentRole
     public static function getList()
     {     
         
-        $regions = self::all();
+        $roles = self::all();
         
         $list = array();
-        foreach ($regions as $row) {
+        foreach ($roles as $row) {
             $list[$row->id] = $row->name;
         }
         asort($list);

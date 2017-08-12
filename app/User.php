@@ -56,6 +56,18 @@ class User extends EloquentUser
         }
     }
     
+    // User __belongs_to__ Country
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }    
+
+    // User __belongs_to__ City
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }    
+
     /** Gets data primary language
      * 
      * @return String
@@ -91,6 +103,28 @@ class User extends EloquentUser
     public function getNameAttribute()
     {
         return $this->first_name . ' '. $this->middle_name. ' '. $this->last_name;
+    }
+         
+    /** Gets name of this user
+     * 
+     * @return String
+     */
+    public function getPlaceAttribute()
+    {
+        $place=[];
+        
+        if ($this->city) {
+            $place[] = $this->city->name;
+            if ($this->city->region) {
+                $place[] = $this->city->region->name;
+            }
+        }
+        
+        if ($this->country) {
+            $place[] = $this->country->name;
+        }
+        
+        return join(', ', $place);
     }
          
     /** Gets first name of user, takes into account locale.

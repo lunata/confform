@@ -1,17 +1,23 @@
 <?php 
-if(!isset($value)) 
-    $value = [];
+if (!isset($is_multiple)) {
+    $is_multiple=true;
+}
 
+if(!isset($value)) {
+    $value = [];
+}
 if(!isset($values)) 
     $values = array(); 
 
 if(!isset($title)) 
     $title = null;
 
+if(!isset($tooltip)) 
+    $tooltip = '';
+
 if (!isset($grouped)) {
     $grouped=false;
 }
-
 if (!isset($class)) {
     $class = 'multiple-select form-control';
 }
@@ -23,10 +29,12 @@ if (!isset($class)) {
         <?=isset($style)  ? ' style="'.$style.'"' : '';?>
      >
     @if($title)
-    <label for="{{$name}}[]">{{ $title }}</label>
+    <label for="{{ $name }}{{$is_multiple ? "[]" : ''}}">{{ $title }}</label>
     @endif
     
-    <select multiple="multiple" class="{{ $class }}" name="{{ $name }}[]">
+    <select {{$is_multiple ? "multiple=\"multiple\"" : ''}} class="{{ $class }}" 
+        name="{{ $name }}{{$is_multiple ? "[]" : ''}}" id="{{ $name }}"
+        title="{{$tooltip}}">
     @if ($grouped)
         @foreach ($values as $group_name=>$group_values)
         <optgroup label="{{$group_name}}">
