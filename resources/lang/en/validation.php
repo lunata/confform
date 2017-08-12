@@ -100,8 +100,8 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'email' => [
+            'required' => 'We need to know your e-mail address!',
         ],
     ],
 
@@ -116,6 +116,19 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'affil_en' => 'affilation',
+        'affil_ru' => 'affilation',
+        'city_id' => 'city',
+        'country_id' => 'country',
+        'email' => 'email address',
+        'first_name_en' => 'first name',
+        'first_name_ru' => 'first name',
+        'last_name_en' => 'last name',
+        'last_name_ru' => 'last name',
+        'password' => 'password',
+        'password_confirm' => 'password confirmation',
+        'g-recaptcha-response' => 'captcha',
+    ],
 
 ];

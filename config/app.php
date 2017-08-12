@@ -173,7 +173,7 @@ return [
         Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,   // in DEBUG mode only
-
+        Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class, // captcha
         /*
          * Application Service Providers...
          */

@@ -5,12 +5,13 @@
 @stop
 
 @section('headExtra')
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     {!!Html::style('css/select2.min.css')!!}
 @stop
 
 @section('content')
 <h1>{{trans('navigation.registration')}}</h1>
-    {!! Form::open() !!}
+    {!! Form::open(['files'=>true]) !!}
 <div class="row">   
     <div class="col col-sm-6">
         @include('widgets.form._formitem_text', ['name' => 'email', 'title' => 'Email', 'attributes'=>['placeholder' => 'Email' ]])
@@ -47,7 +48,14 @@
  
     @include('user._form_transl_fields')
 
+<div class="row">   
+    <div class="col col-sm-6">
+    @include('widgets.form.captcha')
+    </div>
+    <div class="col col-sm-6">    
     @include('widgets.form._formitem_btn_submit', ['title' => trans('auth.register')])
+    </div>
+</div>                 
     {!! Form::close() !!}
 @stop
 

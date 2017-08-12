@@ -145,6 +145,7 @@ class AuthController extends Controller
             'last_name_'.$prlang  => 'required|string|max:191',
             'affil_'.$prlang  => 'required|string|max:255',
             'email'  => 'required|email|max:191',
+            'g-recaptcha-response'=>'required|captcha',
             'password' => 'required',
             'password_confirm' => 'required|same:password',
             'country_id' => 'required|integer',
@@ -194,6 +195,8 @@ class AuthController extends Controller
             foreach ($user->getTranslatedFields() as $field) {
                 $user->{$field.'_'.$prlang} = $request->{$field.'_'.$prlang};
             }
+            $user->country_id = $request->country_id;
+            $user->city_id = $request->city_id;
             $user->save();
 
             return Redirect::to('login')

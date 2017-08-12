@@ -20,6 +20,9 @@ Route::group( [ 'prefix' => LaravelLocalization::setLocale(),
             return view('welcome');
         });
         
+        Route::get('captcha-form-validation',array('as'=>'google.get-recaptcha-validation-form','uses'=>'FileController@getCaptchaForm')) ;
+        Route::post('captcha-form-validation',array('as'=>'google.post-recaptcha-validation','uses'=>'FileController@postCaptchaForm')) ;
+
         // Вызов страницы регистрации пользователя
         Route::get('register', 'AuthController@register');   
         // Пользователь заполнил форму регистрации и отправил
