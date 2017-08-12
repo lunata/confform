@@ -53,7 +53,10 @@
     @include('widgets.form.captcha')
     </div>
     <div class="col col-sm-6">    
-    @include('widgets.form._formitem_btn_submit', ['title' => trans('auth.register')])
+        <input id="confirm_personal" type="checkbox"> <b>{{trans('user.confirm_personal_data')}}</b>
+        <p>@include('widgets.form._formitem_btn_submit', 
+            ['title' => trans('auth.register'), 
+             'is_disabled' => true])</p>
     </div>
 </div>                 
     {!! Form::close() !!}
@@ -64,6 +67,10 @@
 @stop
 
 @section('jqueryFunc')
+    $("#confirm_personal").click(function(){
+        $('input[type=submit]').attr('disabled',!this.checked);
+    });
+
     $(".select-country").select2({
         placeholder: "{{trans('user.select_country')}}",
         allowClear: true

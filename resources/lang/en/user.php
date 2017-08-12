@@ -13,6 +13,7 @@ return [
     'affil' => 'Affilation', 
     'city' => 'City',
     'city_tooltip' => 'If you have not found your city in the selected region, try to delete the region and search the city again',
+    'confirm_personal_data' => 'I confirm my consent to the processing of personal data',
     'country' => 'Country',
     'degree' => 'Scientific degree',
     'first_name' => 'First name',
