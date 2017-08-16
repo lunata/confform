@@ -291,5 +291,13 @@ class User extends EloquentUser
         return false;
     }
     
-    
+    public static function authUser() {
+        $sentinelUser = Sentinel::check(); 
+        if (!$sentinelUser) 
+                return Redirect::to('/')
+                               ->withErrors(\Lang::get('error.permission_denied'));
+        
+        $user = self::find($sentinelUser->id);
+        return $user;
+    }
 }

@@ -49,6 +49,11 @@ class UserController extends Controller
     {
         $users = User::orderBy('id','desc')->get()->sortBy('prior');
         
+        $admin = User::authUser();
+        if (!$admin->hasAccess('all')) {
+            $users = $users->where('prior','>=',$admin->prior);
+        }
+        
         return view('user.index')
                     ->with(['users' => $users]);
     }
@@ -107,7 +112,15 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id); 
-        $role_values = Role::getList();
+
+        $admin = User::authUser();
+        if (!$admin->hasAccess('all') && $admin->prior > $user->prior) {
+            return Redirect::to('/')
+                           ->withErrors(\Lang::get('error.permission_denied'));
+        }
+                
+        $role_values = Role::getList($admin->prior);
+                //->where('prior','>=',$admin->prior);
         
         $role_value = [];
         foreach ($user->roles as $role) {
@@ -160,6 +173,13 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::find($id);
+
+        $admin = User::authUser();
+        if (!$admin->hasAccess('all') && $admin->prior > $user->prior) {
+            return Redirect::to('/')
+                           ->withErrors(\Lang::get('error.permission_denied'));
+        }
+
         $prlang = $user->getPrimLang();
         $adlang = $user->getAddLang();
         
@@ -207,10 +227,16 @@ class UserController extends Controller
             try{
                 $user = User::find($id);
                 if($user){
-                    $user_name = $user->email;
-                    $user->roles()->detach();
-                    $user->delete();
-                    $result['message'] = \Lang::get('auth.user_removed', ['name'=>$user_name]);
+                    $admin = User::authUser();
+                    if (!$admin->hasAccess('all') && $admin->prior > $user->prior) {
+                        $error = true;
+                        $result['error_message'] = \Lang::get('error.permission_denied');
+                    } else {
+                        $user_name = $user->email;
+                        $user->roles()->detach();
+                        $user->delete();
+                        $result['message'] = \Lang::get('auth.user_removed', ['name'=>$user_name]);
+                    }
                 }
                 else{
                     $error = true;
@@ -245,12 +271,7 @@ class UserController extends Controller
      */
     public function profile()
     {
-        $sentinelUser = Sentinel::check(); 
-        if (!$sentinelUser) 
-                return Redirect::to('/')
-                               ->withErrors(\Lang::get('error.permission_denied'));
-        
-        $user = User::find($sentinelUser->id);
+        $user = User::authUser();
         
         $locale = LaravelLocalization::getCurrentLocale();
         $country_values = [NULL => ''] + Country::getList();
@@ -275,12 +296,7 @@ class UserController extends Controller
     
     public function profileUpdate(Request $request)
     {
-        $sentinelUser = Sentinel::check(); 
-        if (!$sentinelUser) 
-                return Redirect::to('/')
-                               ->withErrors(\Lang::get('error.permission_denied'));
-        
-        $user = User::find($sentinelUser->id);
+        $user = User::authUser();
         
         $prlang = $user->getPrimLang();
         $adlang = $user->getAddLang();

@@ -80,18 +80,23 @@ class Role extends EloquentRole
 
     /** Gets list of roles
      * 
+     * @param $min_prior - get roles with priority more $min_prior
+     * 
      * @return Array [1=>'admin',..]
      */
-    public static function getList()
+    public static function getList($min_prior=null)
     {     
+        $roles = self::orderBy('prior')->get();
         
-        $roles = self::all();
+        if ($min_prior) {
+            $roles = $roles->where('prior','>=',$min_prior);
+        }
         
         $list = array();
         foreach ($roles as $row) {
             $list[$row->id] = $row->name;
         }
-        asort($list);
+//        asort($list);
         return $list;         
     }
 }
