@@ -3,7 +3,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords" content="Russian language, Veps language, Karelian language, corpus linguistics, computer-readable dictionary, русский язык, вепсский язык, карельский язык, корпусная лингвистика, машиночитаемый словарь">
     
-    <title>{{ trans('main.site_abbr') }} :: @yield('title')</title>
+    <title>{{ trans('main.site_abbr') }}
+        @hasSection ('title') 
+             :: @yield('title')
+        @endif
+    </title>    
     
     <!-- Fonts -->
     <!--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous"-->

@@ -128,6 +128,17 @@ class UserController extends Controller
         }
         
         $perm_values = $user->getPermList();
+      
+        if (!$admin->hasAccess('all')) {
+            $access_perm_values = [];
+            foreach ($admin->permissions as $perm_n=>$perm_v) {
+                if ($perm_v) {
+                    $access_perm_values[$perm_n] = $perm_values[$perm_n];
+                }
+            }
+            $perm_values = $access_perm_values;
+        }
+        
         $user_perms = $user->permissions;
 
         $perm_value = [];
@@ -196,13 +207,23 @@ class UserController extends Controller
         $user->fill($request->all());
 
         $user_perms = [];
-        if ($request->permissions) {
-            foreach ($request->permissions as $p) {
-                $user_perms[$p] = true;
+        if ($admin->hasAccess('all')) {
+            if ($request->permissions) {
+                foreach ($request->permissions as $p) {
+                    $user_perms[$p] = true;
+                }
+            } 
+            $user->permissions = $user_perms;      
+        } else {
+            foreach ($admin->permissions as $perm_n=>$perm_v) {
+                if ($request->permissions && in_array($perm_n,$request->permissions)) {
+                    $user -> updatePermission($perm_n, true, true);
+                } else {
+                    $user -> removePermission($perm_n);
+                }
             }
-        } 
-//        $user->permissions = json_encode($user_perms);      
-        $user->permissions = $user_perms;      
+        }
+
         $user->save();
         
         $user->roles()->detach();
@@ -284,12 +305,31 @@ class UserController extends Controller
             $region_id = null;
         }
        
+        $role_values = Role::getList();
+        
+        $role_value = [];
+        foreach ($user->roles as $role) {
+            $role_value[] = $role_values[$role->id];
+        }
+        
+        $perm_values = $user->getPermList();
+        $user_perms = $user->permissions;
+
+        $perm_value = [];
+        foreach ($perm_values as $perm=>$perm_t) {
+            if (isset($user_perms[$perm]) && $user_perms[$perm]) {
+                $perm_value[] = $perm_t;
+            }
+        }
+        
         return view('user.edit_profile')
                   ->with(['user' => $user,
                           'city_values' => $city_values,
                           'country_values' => $country_values,
                           'region_values' => $region_values,
                           'region_id' => $region_id,
+                          'role_value' => $role_value,
+                          'perm_value' => $perm_value,
                           'locale' => $locale
                          ]);
     }

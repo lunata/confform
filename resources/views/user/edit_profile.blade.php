@@ -13,10 +13,21 @@
         
         {!! Form::model($user, ['method'=>'POST', 'route' => ['profile.update']]) !!}
 
-{{--        @include('widgets.form._formitem_text', 
-                ['name' => 'email', 
-                 'title'=> 'E-mail'])
---}}                 
+<div class='row'>
+    <div class="col col-sm-4">
+        <p><b>E-mail</b><br>
+            {{$user->email}}</p>
+    </div>
+    <div class="col col-sm-4">
+        <p><b>{{trans('auth.roles')}}</b><br>
+            {{join('<br>',$role_value)}}</p>
+    </div>
+    <div class="col col-sm-4">
+        <p><b>{{trans('auth.permissions')}}</b><br>
+            {!!join('<br>',$perm_value)!!}</p>
+    </div>
+</div>
+                 
         @include('user._form_transl_fields',
                 ['translated_fields'=>$user->getTranslatedFields(),
                  'prim_lang' => $user->getPrimLang(),
@@ -116,4 +127,3 @@
         }
     });
 @stop
-

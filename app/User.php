@@ -13,7 +13,9 @@ use Confform\Role;
 
 class User extends EloquentUser
 {
-    protected $fillable = ['email','permissions','country_id','city_id'];
+    protected $fillable = ['email','country_id','city_id'];
+    protected $guarded = ['permissions'];
+
     protected $perm_list = ['all','user.view','user.update','user.delete',
         'role','conf.create','conf.update','conf.delete'];
 
@@ -226,6 +228,7 @@ class User extends EloquentUser
         foreach ($perms as $p) {
             $list[$p] = \Lang::get("auth.perm.$p");
         }
+
         return $list;
     }
 
@@ -257,7 +260,9 @@ class User extends EloquentUser
         $list = [];
         
         foreach ($permissions as $key => $value) {
-            $list[] = $key;
+            if ($value) {
+                $list[] = $key;
+            }
         }
         return join(', ', $list);
     }
