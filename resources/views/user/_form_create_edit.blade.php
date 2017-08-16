@@ -12,6 +12,7 @@
         @include('widgets.form._formitem_select2',
                 ['name' => 'country_id',
                  'title' => trans('user.country'),
+                 'value' => [$user->country_id],
                  'values' => $country_values,
                  'is_multiple' => false,
                  'class'=>'form-control select-country'                            
@@ -20,7 +21,8 @@
         @include('widgets.form._formitem_select2',
                 ['name' => 'region_id',
                  'title' => trans('user.region'),
-                 'values' => NULL,
+                 'value' => [$region_id],
+                 'values' => $region_values,
                  'is_multiple' => false,
                  'class'=>'form-control select-region'                            
         ])
@@ -28,7 +30,8 @@
         @include('widgets.form._formitem_select2',
                 ['name' => 'city_id',
                  'title' => trans('user.city'),
-                 'values' => NULL,
+                 'value' => [$user->city_id],
+                 'values' => $city_values,
                  'is_multiple' => false,
                  'class'=>'form-control select-city'                            
         ])

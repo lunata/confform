@@ -36,6 +36,7 @@ return [
     'perm.conf.update'=> 'Изменение конференций',
     'perm.conf.delete'=> 'Удаление конференций',
     'permissions' => 'Права',
+    'prior' => 'Приоритет',
     
     'register' => 'Зарегистрироваться',
     'remember' => 'Запомнить меня',

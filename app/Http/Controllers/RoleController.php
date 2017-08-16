@@ -32,7 +32,7 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        $roles = Role::orderBy('slug')->get();
+        $roles = Role::orderBy('prior')->get();
         
         return view('role.index')
                     ->with(['roles' => $roles]);

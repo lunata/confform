@@ -22,6 +22,7 @@
         <thead>
             <tr>
                 <th>No</th>
+                <th>{{ trans('auth.prior') }}</th>
                 <th>{{ trans('auth.slug') }}</th>
                 <th>{{ trans('auth.role_name') }}</th>
                 <th>{{ trans('auth.permissions') }}</th>
@@ -32,6 +33,7 @@
             @foreach($roles as $role)
             <tr>
                 <td>{{ $list_count++ }}</td>
+                <td>{{$role->prior}}</td>
                 <td>{{$role->slug}}</td>
                 <td>{{$role->name}}</td>
                 <td>{{$role->permissionString()}}</td>

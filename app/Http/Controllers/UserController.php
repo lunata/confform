@@ -47,7 +47,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::orderBy('id','desc')->get();
+        $users = User::orderBy('id','desc')->get()->sortBy('prior');
         
         return view('user.index')
                     ->with(['users' => $users]);
@@ -247,8 +247,8 @@ class UserController extends Controller
     {
         $sentinelUser = Sentinel::check(); 
         if (!$sentinelUser) 
-                return Redirect::to('/user/')
-                               ->withErrors(\Lang::get('messages.permission_denied'));
+                return Redirect::to('/')
+                               ->withErrors(\Lang::get('error.permission_denied'));
         
         $user = User::find($sentinelUser->id);
         
@@ -277,8 +277,8 @@ class UserController extends Controller
     {
         $sentinelUser = Sentinel::check(); 
         if (!$sentinelUser) 
-                return Redirect::to('/user/')
-                               ->withErrors(\Lang::get('messages.permission_denied'));
+                return Redirect::to('/')
+                               ->withErrors(\Lang::get('error.permission_denied'));
         
         $user = User::find($sentinelUser->id);
         

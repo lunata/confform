@@ -35,6 +35,7 @@ return [
     'perm.dict.edit'=> 'Dictionary editing',
     'perm.ref.edit'=> 'References editing',
     'permissions' => 'Permissions',
+    'prior' => 'Priority',
     
     'register' => 'Register',
     'remember' => 'Remember me',

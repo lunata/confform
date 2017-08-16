@@ -7,7 +7,7 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/profile') }}"><i class="fa fa-btn fa-user"></i>{{ trans('navigation.profile') }}</a></li>
-                                @if (Confform\User::checkAccess('user.*'))
+                                @if (Confform\User::checkAccess('user.view'))
                                 <li><a href="{{ url('/user') }}"><i class="fa fa-btn fa-users"></i>{{ trans('navigation.users') }}</a></li>
                                 @endif
                                 @if (Confform\User::checkAccess('role'))

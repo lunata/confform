@@ -18,7 +18,12 @@
                 <th>{{ trans('auth.permissions') }}</th>
                 <th>{{ trans('auth.roles') }}</th>
                 <th>{{ trans('auth.last_login') }}</th>
-                <th colspan="2"></th>
+                @if (Confform\User::checkAccess('user.update'))                
+                <th></th>
+                @endif
+                @if (Confform\User::checkAccess('user.delete'))                
+                <th></th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -31,13 +36,17 @@
                 <td>{{$user->permissionString()}}</td>
                 <td>{{$user->rolesNames()}}</td>
                 <td>{{$user->last_login}}</td>
+                @if (Confform\User::checkAccess('user.update'))
                 <td>
                     <a  href="{{ LaravelLocalization::localizeURL('/user/'.$user->id.'/edit') }}" 
                         class="btn btn-warning btn-xs btn-detail" value="{{$user->id}}">{{ trans('messages.edit') }}</a> 
-                 </td>
+                </td>
+                @endif
+                @if (Confform\User::checkAccess('user.delete'))                
                 <td>
                     @include('widgets.form._button_delete', ['is_button'=>true, $route = 'user.destroy', 'id' => $user->id])
                 </td>
+                @endif
             </tr> 
             @endforeach
         </tbody>

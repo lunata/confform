@@ -105,6 +105,25 @@ class User extends EloquentUser
         return $this->first_name . ' '. $this->middle_name. ' '. $this->last_name;
     }
          
+    /** Gets priority of this user
+     * 
+     * @return String
+     */
+    public function getPriorAttribute()
+    {
+        $roles = $this->roles;
+        if (!$roles) {
+            return false;
+        }
+        
+        $roles = $roles->sortByDesc('prior');
+        if ($roles->last()->slug == 'banned') {
+                return $roles->last()->prior;
+        }
+        
+        return $roles->first()->prior;
+    }
+         
     /** Gets name of this user
      * 
      * @return String

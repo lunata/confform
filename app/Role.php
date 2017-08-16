@@ -10,7 +10,7 @@ use Confform\User;
 
 class Role extends EloquentRole
 {
-    protected $fillable = ['slug','name','permissions'];
+    protected $fillable = ['slug','name','permissions','prior'];
     
     use \Venturecraft\Revisionable\RevisionableTrait;
 
