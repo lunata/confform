@@ -56,6 +56,11 @@ Route::group( [ 'prefix' => LaravelLocalization::setLocale(),
         Route::get('user/city_list', 'UserController@citiesList');
         Route::get('user/region_list', 'UserController@regionsList');
 
+        Route::resource('conf', 'ConferenceController',
+                       ['names' => ['update' => 'Conference.update',
+                                    'store' => 'Conference.store',
+                                    'destroy' => 'Conference.destroy']]);
+                
         Route::resource('role', 'RoleController',
                        ['names' => ['update' => 'role.update',
                                     'store' => 'role.store',

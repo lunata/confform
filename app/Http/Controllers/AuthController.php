@@ -197,6 +197,7 @@ class AuthController extends Controller
             }
             $user->country_id = $request->country_id;
             $user->city_id = $request->city_id;
+            $user->prior = $user->getRolesPrior();
             $user->save();
 
             return Redirect::to('login')

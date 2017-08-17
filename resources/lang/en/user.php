@@ -25,5 +25,7 @@ return [
     'select_city' => 'Select a city',
     'select_country' => 'Select a country',
     'select_region' => 'Select a region',
+    'select_role' => 'Select a role',
+    'select_perm' => 'Select a permission',
     'stitle' => 'Scientific title',    
 ];

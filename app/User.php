@@ -14,7 +14,7 @@ use Confform\Role;
 class User extends EloquentUser
 {
     protected $fillable = ['email','country_id','city_id'];
-    protected $guarded = ['permissions'];
+    protected $guarded = ['permissions','prior'];
 
     protected $perm_list = ['all','user.view','user.update','user.delete',
         'role','conf.create','conf.update','conf.delete'];
@@ -111,11 +111,11 @@ class User extends EloquentUser
      * 
      * @return String
      */
-    public function getPriorAttribute()
+    public function getRolesPrior()
     {
         $roles = $this->roles;
         if (!$roles) {
-            return false;
+            return NULL;
         }
         
         $roles = $roles->sortByDesc('prior');

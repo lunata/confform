@@ -14,4 +14,5 @@ return [
     'status0'=> 'Future',
     'status1'=> 'Current',
     'status2'=> 'Archive',
+    'title' => 'Title',
 ];

@@ -13,6 +13,7 @@ use Sentinel;
 use Response;
 
 use Confform\City;
+use Confform\Confform;
 use Confform\Country;
 use Confform\Region;
 use Confform\Role;
@@ -20,14 +21,17 @@ use Confform\User;
 
 class UserController extends Controller
 {
-    protected $dbd = null;
+    public $url_args=[];
+    public $args_by_get='';
+    
+//    protected $dbd = null;
         
      /**
      * Instantiate a new new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
 //        $this->middleware('role:admin,/', ['all']);
 //        $this->middleware('auth');
@@ -38,6 +42,33 @@ class UserController extends Controller
         
         // $this->dbd = getenv('DB_DATABASE');
         // dd('hello world from __construct()' . $this->dbd);
+        $this->url_args = [
+                    'limit_num'       => (int)$request->input('limit_num'),
+                    'page'            => (int)$request->input('page'),
+                    'search_email'    => $request->input('search_email'),
+                    'search_name'     => $request->input('search_name'),
+                    'search_id'       => (int)$request->input('search_id'),
+                    'search_country'  => (array)$request->input('search_country'),
+                    'search_city'     => (array)$request->input('search_city'),
+                    'search_perm'    => (array)$request->input('search_perm'),
+                    'search_role'    => (array)$request->input('search_role'),
+                ];
+        
+        if (!$this->url_args['page']) {
+            $this->url_args['page'] = 1;
+        }
+        
+        if (!$this->url_args['search_id']) {
+            $this->url_args['search_id'] = NULL;
+        }
+        
+        if ($this->url_args['limit_num']<=0) {
+            $this->url_args['limit_num'] = 10;
+        } elseif ($this->url_args['limit_num']>1000) {
+            $this->url_args['limit_num'] = 1000;
+        }   
+        
+        $this->args_by_get = Confform::searchValuesByURL($this->url_args);
     }
 
     /**
@@ -47,15 +78,76 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::orderBy('id','desc')->get()->sortBy('prior');
+        $users = User::orderBy('prior');
         
         $admin = User::authUser();
         if (!$admin->hasAccess('all')) {
             $users = $users->where('prior','>=',$admin->prior);
         }
         
+        if ($this->url_args['search_email']) {
+            $users = $users->where('email','like', '%'.$this->url_args['search_email'].'%');
+        } 
+
+        if ($this->url_args['search_name']) {
+            $search_name = '%'.$this->url_args['search_name'].'%';
+            $users = $users->where(function ($query) use ($search_name) {
+                $query->where('first_name_'.env('PRIM_LANG'), 'like', $search_name)
+                      ->orWhere('last_name_'.env('PRIM_LANG'), 'like', $search_name)
+                      ->orWhere('middle_name_'.env('PRIM_LANG'), 'like', $search_name)
+                      ->orWhere('first_name_'.env('ADD_LANG'), 'like', $search_name)
+                      ->orWhere('last_name_'.env('ADD_LANG'), 'like', $search_name)
+                      ->orWhere('middle_name_'.env('ADD_LANG'), 'like', $search_name);
+            });
+        } 
+
+        if ($this->url_args['search_country']) {
+            $users = $users->whereIn('country_id',$this->url_args['search_country']);
+        } 
+
+        if ($this->url_args['search_city']) {
+            $users = $users->whereIn('city_id',$this->url_args['search_city']);
+        } 
+
+        if ($this->url_args['search_role']) {
+            $search_role = $this->url_args['search_role'];
+            $users = $users->whereIn('id',function ($query) use ($search_role) {
+                $query->select('user_id')
+                      ->from('role_users')
+                      ->whereIn('role_id', $search_role);
+            });
+        } 
+
+        if ($this->url_args['search_perm'] && sizeof($this->url_args['search_perm'])) {
+            $search_perm = $this->url_args['search_perm'];
+            $users = $users->where(function ($query) use ($search_perm) {
+                $query->where('permissions', 'like', '%"'.$search_perm[0].'":true%');
+                for ($i=1; $i<sizeof($search_perm); $i++) {
+                    $query->orWhere('permissions', 'like', '%"'.$search_perm[$i].'":true%');
+                }
+            });
+        } 
+
+        $numAll = $users->get()->count();
+        $users = $users->paginate($this->url_args['limit_num']);         
+
+        $country_values = Country::getList();
+        $city_values = City::getList($this->url_args['search_country']);
+        $role_values = Role::getList();
+        
+        $user = new User;
+        $perm_values = $user->getPermList();
+        
         return view('user.index')
-                    ->with(['users' => $users]);
+                    ->with(['users' => $users,
+                            'city_values'    => $city_values,
+                            'country_values' => $country_values,
+                            'role_values'    => $role_values,
+                            'perm_values' => $perm_values,
+                            'numAll'         => $numAll,
+                            'args_by_get'    => $this->args_by_get,
+                            'url_args'       => $this->url_args,
+                    ]);
     }
 
     /**
@@ -120,7 +212,6 @@ class UserController extends Controller
         }
                 
         $role_values = Role::getList($admin->prior);
-                //->where('prior','>=',$admin->prior);
         
         $role_value = [];
         foreach ($user->roles as $role) {
@@ -170,7 +261,9 @@ class UserController extends Controller
                           'role_value' => $role_value,
                           'perm_values' => $perm_values,
                           'perm_value' => $perm_value,
-                          'locale' => $locale
+                          'locale' => $locale,
+                          'args_by_get'    => $this->args_by_get,
+                          'url_args'       => $this->url_args,
                          ]);
     }
 
@@ -205,6 +298,8 @@ class UserController extends Controller
             'city_id' => 'required|integer'
         ]);
         $user->fill($request->all());
+        
+        $user->prior=$user->getRolesPrior();
 
         $user_perms = [];
         if ($admin->hasAccess('all')) {
@@ -228,8 +323,8 @@ class UserController extends Controller
         
         $user->roles()->detach();
         $user->roles()->attach($request->roles);
-        
-        return Redirect::to('/user/?search_id='.$user->id)
+
+        return Redirect::to('/user/?'.($this->args_by_get))
             ->withSuccess(\Lang::get('messages.updated_success'));        
     }
 

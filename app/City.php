@@ -45,7 +45,7 @@ class City extends Model
         $cities = self::orderBy('id');
         
         if ($country_id) {
-            $cities = $cities -> where('country_id',$country_id);
+            $cities = $cities -> whereIn('country_id',(array)$country_id);
         }
         
         if ($region_id) {

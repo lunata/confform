@@ -5,7 +5,10 @@ if (!isset($is_multiple)) {
 
 if(!isset($value)) {
     $value = [];
+} elseif(!is_array($value)){
+    $value = (array)$value;
 }
+
 if(!isset($values)) 
     $values = array(); 
 

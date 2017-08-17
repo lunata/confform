@@ -1,3 +1,5 @@
+        @include('widgets.form._url_args_by_post',['url_args'=>$url_args])
+        
         @include('user._form_transl_fields',
                 ['translated_fields'=>$user->getTranslatedFields(),
                  'prim_lang' => $user->getPrimLang(),

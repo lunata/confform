@@ -2,27 +2,53 @@
 @extends('layouts.master')
 
 @section('title')
-{{ trans('auth.user_list') }}
+{{ trans('navigation.conf_list') }}
 @stop
 
 @section('headExtra')
     {!!Html::style('css/select2.min.css')!!}
+    {!!Html::style('css/bootstrap-datepicker.min.css')!!}
 @stop
 
 @section('content')
-        <h2>{{ trans('auth.user_list') }}</h2>
-              
-        {!! Form::open(['url' => '/user/',
+        
+        <h2>{{ trans('navigation.conf_list') }}</h2>
+
+        <p>
+        @if (User::checkAccess('conf.create'))
+            <a href="{{ LaravelLocalization::localizeURL('/conference/create') }}">
+        @endif
+            {{ trans('messages.create_new_g') }}
+        @if (User::checkAccess('conf.create'))
+            </a>
+        @endif
+        </p>
+
+        {!! Form::open(['url' => '/conf/',
                              'method' => 'get'])
         !!}
 <div class='row'>      
-    <div class='col col-sm-3'>
+    <div class='col col-sm-4'>
         @include('widgets.form._formitem_text',
-                ['name' => 'search_email',
-                'value' => $url_args['search_email'],
-                'attributes'=>['placeholder'=>'E-mail']])
+                ['name' => 'search_title',
+                'value' => $url_args['search_title'],
+                'attributes'=>['placeholder'=>trans('conf.title')]])
     </div>
-    <div class='col col-sm-5'>
+    <div class='col col-sm-1' style='text-align: right'>
+        {{trans('messages.from')}}
+    </div>
+    <div class='col col-sm-7'>
+        @include('widgets.form._formitem_daterange',
+                ['id' => 'start-finish',
+                 'name1' => 'search_started_after',
+                 'value1' => $url_args['search_started_after'],
+                 'name2' => 'search_finished_before',
+                 'value2' => $url_args['search_finished_before'],
+                ])
+    </div>
+</div>
+<div class='row'>      
+    <div class='col col-sm-4'>
         @include('widgets.form._formitem_select2', 
                 ['name' => 'search_country', 
                  'values' => $country_values,
@@ -36,31 +62,6 @@
                  'values' => $city_values,
                  'value' => $url_args['search_city'],
                  'class'=>'select-city form-control'
-            ])
-        
-    </div>
-</div>
-<div class='row'>      
-    <div class='col col-sm-3'>
-        @include('widgets.form._formitem_text',
-                ['name' => 'search_name',
-                'value' => $url_args['search_name'],
-                'attributes'=>['placeholder'=>trans('auth.name')]])
-    </div>
-    <div class='col col-sm-2'>
-        @include('widgets.form._formitem_select2', 
-                ['name' => 'search_role', 
-                 'values' => $role_values,
-                 'value' => $url_args['search_role'],
-                 'class'=>'select-role form-control'
-            ])
-    </div>
-    <div class='col col-sm-3'>
-        @include('widgets.form._formitem_select2', 
-                ['name' => 'search_perm', 
-                 'values' => $perm_values,
-                 'value' => $url_args['search_perm'],
-                 'class'=>'select-perm form-control'
             ])
     </div>
     <div class='col col-sm-1'>
@@ -80,78 +81,67 @@
     </div>
 </div>                               
         {!! Form::close() !!}
-
-        <p>{{ trans('messages.founded_records', ['count'=>$numAll]) }}</p>
         
-        @if ($users)
+        <p>{{ trans('messages.founded_records', ['count'=>$numAll]) }}</p>
+
+        @if ($confs)
         <table class="table">
         <thead>
             <tr>
                 <th>No</th>
-                <th>E-mail</th>
-                <th>{{ trans('auth.name') }}</th>
+                <th>{{ trans('conf.title') }}</th>
                 <th>{{ trans('user.city') }}</th>
-                <th>{{ trans('auth.permissions') }}</th>
-                <th>{{ trans('auth.roles') }}</th>
-                <th>{{ trans('auth.last_login') }}</th>
-                @if (Confform\User::checkAccess('user.update'))                
+                @if (Confform\User::checkAccess('conf.update'))                
                 <th></th>
                 @endif
-                @if (Confform\User::checkAccess('user.delete'))                
+                @if (Confform\User::checkAccess('conf.delete'))                
                 <th></th>
                 @endif
             </tr>
         </thead>
         <tbody>
-            @foreach($users as $user)
+            @foreach($confs as $conf)
             <tr>
                 <td>{{ $list_count++ }}</td>
-                <td>{{$user->email}}</td>
-                <td>{{$user->name}}</td>
-                <td>{{$user->place}}</td>
-                <td>{{$user->permissionString()}}</td>
-                <td>{{$user->rolesNames()}}</td>
-                <td>{{$user->last_login}}</td>
-                @if (Confform\User::checkAccess('user.update'))
+                <td>{{$conf->title}}</td>
+                @if (Confform\User::checkAccess('conf.update'))
                 <td>
                     @include('widgets.form._button_edit', 
                             ['is_button'=>true, 
-                             'route' => '/user/'.$user->id.'/edit'])
+                             'route' => '/conf/'.$conf->id.'/edit'])
                 </td>
                 @endif
-                @if (Confform\User::checkAccess('user.delete'))                
+                @if (Confform\User::checkAccess('conf.delete'))                
                 <td>
-                    @include('widgets.form._button_delete', ['is_button'=>true, $route = 'user.destroy', 'id' => $user->id])
+                    @include('widgets.form._button_delete', ['is_button'=>true, $route = 'conf.destroy', 'id' => $conf->id])
                 </td>
                 @endif
             </tr> 
             @endforeach
         </tbody>
         </table>
-        {!! $users->appends($url_args)->render() !!}
+        {!! $confs->appends($url_args)->render() !!}
         @endif
 @stop
 
 @section('footScriptExtra')
+    {!!Html::script('js/bootstrap-datepicker.min.js')!!}
+    {!!Html::script('js/bootstrap-datepicker.ru.min.js')!!}
     {!!Html::script('js/select2.min.js')!!}
     {!!Html::script('js/rec-delete-link.js')!!}
 @stop
 
 @section('jqueryFunc')
-    recDelete('{{ trans('messages.confirm_delete') }}', '/user');
-
+    recDelete('{{ trans('messages.confirm_delete') }}', '/conf');
+    
+    $('#start-finish').datepicker({
+        format: "dd-mm-yyyy",
+        language: "{{$locale}}",
+        orientation: "auto left"
+    });
+    
     $(".select-country").select2({
         placeholder: "{{trans('user.select_country')}}",
-        allowClear: true
-    });
-    
-    $(".select-role").select2({
-        placeholder: "{{trans('user.select_role')}}",
-        allowClear: true
-    });
-    
-    $(".select-perm").select2({
-        placeholder: "{{trans('user.select_perm')}}",
         allowClear: true
     });
     
@@ -177,4 +167,4 @@
           cache: true
         }
     });
-@stop
+@stop        
