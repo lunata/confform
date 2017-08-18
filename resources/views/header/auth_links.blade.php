@@ -7,8 +7,8 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/profile') }}"><i class="fa fa-btn fa-user"></i>{{ trans('navigation.profile') }}</a></li>
-                                @if (Confform\User::checkAccess('conf.*'))
-                                <li><a href="{{ url('/conf') }}"><i class="fa fa-btn fa-handshake-o"></i>{{ trans('navigation.conf_list') }}</a></li>
+                                @if (Confform\User::checkAccess('event.*'))
+                                <li><a href="{{ url('/event') }}"><i class="fa fa-btn fa-handshake-o"></i>{{ trans('navigation.event_list') }}</a></li>
                                 @endif
                                 @if (Confform\User::checkAccess('user.view'))
                                 <li><a href="{{ url('/user') }}"><i class="fa fa-btn fa-users"></i>{{ trans('navigation.users') }}</a></li>

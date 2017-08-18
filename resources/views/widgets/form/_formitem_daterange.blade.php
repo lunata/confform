@@ -9,8 +9,13 @@ if(!isset($value1))
     $value1 = null;
 if(!isset($value2)) 
     $value2 = null;
+if (!isset($label))
+    $label = null;
 ?>
 <div class="form-group {!! $errors->has($name1) ? 'has-error' : null !!}">
+    @if($label)
+	<label for="{{$name1}}">{{ $label }}&nbsp;</label>
+    @endif
     <div class="input-daterange input-group" id="{{$id}}">
         <input type="text" class="input-sm form-control" value="{{$value1}}" name="{{$name1}}" />
         <span class="input-group-addon">{{trans('messages.to')}}</span>

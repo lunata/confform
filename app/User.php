@@ -17,7 +17,7 @@ class User extends EloquentUser
     protected $guarded = ['permissions','prior'];
 
     protected $perm_list = ['all','user.view','user.update','user.delete',
-        'role','conf.create','conf.update','conf.delete'];
+        'role','event.create','event.update','event.delete'];
 
     private $prim_lang;
     private $add_lang;

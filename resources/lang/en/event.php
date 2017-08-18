@@ -4,12 +4,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Misc Conference Lines
+    | Misc Event Lines
     |--------------------------------------------------------------------------
     |
     |
     */
     
+    'dates' => 'The event will be held',
+    'material_accept' => 'Materials are accepted',
+    'of_event' => 'of event',
+    'registr_access' => 'The registration is accessible',
     'status' => 'Status',
     'status0'=> 'Future',
     'status1'=> 'Current',

@@ -11,8 +11,8 @@ return [
     */
 
     'about_project' => 'About',
-    'conf_arch'=>'Archive',
-    'conf_list'=>'Events',
+    'event_arch'=>'Archive',
+    'event_list'=>'Events',
     'contacts'=>'Contacts',
     'hotels'=>'Hotels',
     'profile' => 'My profile',

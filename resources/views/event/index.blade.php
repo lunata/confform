@@ -2,29 +2,29 @@
 @extends('layouts.master')
 
 @section('title')
-{{ trans('navigation.conf_list') }}
+{{ trans('navigation.event_list') }}
 @stop
 
 @section('headExtra')
     {!!Html::style('css/select2.min.css')!!}
-    {!!Html::style('css/bootstrap-datepicker.min.css')!!}
+    {!!Html::style('css/bootstrap-datepicker3.min.css')!!}
 @stop
 
 @section('content')
         
-        <h2>{{ trans('navigation.conf_list') }}</h2>
+        <h2>{{ trans('navigation.event_list') }}</h2>
 
         <p>
-        @if (User::checkAccess('conf.create'))
-            <a href="{{ LaravelLocalization::localizeURL('/conference/create') }}">
+        @if (User::checkAccess('event.create'))
+            <a href="{{ LaravelLocalization::localizeURL('/event/create') }}">
         @endif
             {{ trans('messages.create_new_g') }}
-        @if (User::checkAccess('conf.create'))
+        @if (User::checkAccess('event.create'))
             </a>
         @endif
         </p>
 
-        {!! Form::open(['url' => '/conf/',
+        {!! Form::open(['url' => '/event/',
                              'method' => 'get'])
         !!}
 <div class='row'>      
@@ -32,7 +32,7 @@
         @include('widgets.form._formitem_text',
                 ['name' => 'search_title',
                 'value' => $url_args['search_title'],
-                'attributes'=>['placeholder'=>trans('conf.title')]])
+                'attributes'=>['placeholder'=>trans('event.title')]])
     </div>
     <div class='col col-sm-1' style='text-align: right'>
         {{trans('messages.from')}}
@@ -84,43 +84,46 @@
         
         <p>{{ trans('messages.founded_records', ['count'=>$numAll]) }}</p>
 
-        @if ($confs)
+        @if ($events)
         <table class="table">
         <thead>
             <tr>
                 <th>No</th>
-                <th>{{ trans('conf.title') }}</th>
+                <th>{{ trans('event.title') }}</th>
                 <th>{{ trans('user.city') }}</th>
-                @if (Confform\User::checkAccess('conf.update'))                
+                <th>{{ trans('event.dates') }}</th>
+                @if (Confform\User::checkAccess('event.update'))                
                 <th></th>
                 @endif
-                @if (Confform\User::checkAccess('conf.delete'))                
+                @if (Confform\User::checkAccess('event.delete'))                
                 <th></th>
                 @endif
             </tr>
         </thead>
         <tbody>
-            @foreach($confs as $conf)
+            @foreach($events as $event)
             <tr>
                 <td>{{ $list_count++ }}</td>
-                <td>{{$conf->title}}</td>
-                @if (Confform\User::checkAccess('conf.update'))
+                <td>{{$event->title}}</td>
+                <td>{{$event->place}}</td>
+                <td>{{$event->dates}}</td>
+            @if (Confform\User::checkAccess('event.update'))
                 <td>
                     @include('widgets.form._button_edit', 
                             ['is_button'=>true, 
-                             'route' => '/conf/'.$conf->id.'/edit'])
+                             'route' => '/event/'.$event->id.'/edit'])
                 </td>
                 @endif
-                @if (Confform\User::checkAccess('conf.delete'))                
+                @if (Confform\User::checkAccess('event.delete'))                
                 <td>
-                    @include('widgets.form._button_delete', ['is_button'=>true, $route = 'conf.destroy', 'id' => $conf->id])
+                    @include('widgets.form._button_delete', ['is_button'=>true, $route = 'event.destroy', 'id' => $event->id])
                 </td>
                 @endif
             </tr> 
             @endforeach
         </tbody>
         </table>
-        {!! $confs->appends($url_args)->render() !!}
+        {!! $events->appends($url_args)->render() !!}
         @endif
 @stop
 
@@ -132,7 +135,7 @@
 @stop
 
 @section('jqueryFunc')
-    recDelete('{{ trans('messages.confirm_delete') }}', '/conf');
+    recDelete('{{ trans('messages.confirm_delete') }}', '/event');
     
     $('#start-finish').datepicker({
         format: "dd-mm-yyyy",

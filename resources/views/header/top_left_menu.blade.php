@@ -1,10 +1,10 @@
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="#" role="button" aria-expanded="false">{{ trans('navigation.conf_list') }}</a>
+                        <a href="#" role="button" aria-expanded="false">{{ trans('navigation.event_list') }}</a>
                     </li>
                     
                     <li class="dropdown">
-                        <a href="#" role="button" aria-expanded="false">{{ trans('navigation.conf_arch') }}</a>
+                        <a href="#" role="button" aria-expanded="false">{{ trans('navigation.event_arch') }}</a>
                     </li>
                     
                     <li class="dropdown">

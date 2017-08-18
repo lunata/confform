@@ -10,6 +10,7 @@ return [
     |
     */
     
+    'add_lang' => 'Additional language',
     'back_to_list' => 'Return to list',
     'back_to_show' => 'Return to review',
     'changed' => 'changed',
@@ -18,6 +19,7 @@ return [
     'create_new_f' => 'Create a new',
     'create_new_m' => 'Create a new',
     'create_new_g' => 'Create a new',
+    'creating' => 'Creating',
     'created_success' => 'Successfully created',
     'delete' => 'delete',
     'delete_confirmation' => 'Delete confirmation',
@@ -29,7 +31,10 @@ return [
     'history' => 'history',
     'in_en' => 'in English',
     'in_ru' => 'in Russian',
+    'lang_en' => 'English',
+    'lang_ru' => 'Russian',
     'limit_num' => 'number of records',
+    'prim_lang' => 'Primary language',
     'records' => 'records',
     'record_not_exists' => 'Record does not exists.',
     'save' => 'save',

@@ -42,7 +42,7 @@ class Country extends Model
             $first_country_obj = Country::
                     where('name_'.env('PRIM_LANG'),'like',$first_country)
                     ->first();
-            if ($first_country_obj) {
+            if ($first_country_obj && isset($list[$first_country_obj->id])) {
                 $first_country_name = $list[$first_country_obj->id];
                 unset($list[$first_country_obj->id]);
                 $list = [$first_country_obj->id => $first_country_name] + $list;

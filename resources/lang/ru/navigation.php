@@ -11,8 +11,8 @@ return [
     */
 
     'about_project' => 'О проекте',
-    'conf_arch'=>'Архив',
-    'conf_list'=>'Мероприятия',
+    'event_arch'=>'Архив',
+    'event_list'=>'Мероприятия',
     'contacts'=>'Контакты',
     'hotels'=>'Гостиницы',
     'logout' => 'Выход',

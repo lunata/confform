@@ -1,3 +1,8 @@
+<?php
+    if (!isset($lang_dir)) {
+        $lang_dir = 'user';
+    }
+?>
     @if ($locale == $add_lang)
 <div class="row">   
     <div class="col col-sm-6">
@@ -6,8 +11,8 @@
             @include('widgets.form._formitem_text', 
                     ['name' => $field.'_'.$prim_lang, 
                      'title'=> $locale!=$prim_lang 
-                            ? trans('user.'.$field).' ('.trans('messages.in_'.$prim_lang).')' 
-                            : trans('user.'.$field)])
+                            ? trans($lang_dir.'.'.$field).' ('.trans('messages.in_'.$prim_lang).')' 
+                            : trans($lang_dir.'.'.$field)])
         @endforeach         
     @if ($locale == $add_lang)
     </div>
@@ -15,7 +20,7 @@
         @foreach ($translated_fields as $field)
             @include('widgets.form._formitem_text', 
                     ['name' => $field.'_'.$add_lang, 
-                     'title'=> trans('user.'.$field).' ('.trans('messages.in_'.$add_lang).')'])
+                     'title'=> trans($lang_dir.'.'.$field).' ('.trans('messages.in_'.$add_lang).')'])
         @endforeach         
     </div>
 </div>                 

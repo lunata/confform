@@ -249,8 +249,7 @@ class UserController extends Controller
         } else {
             $region_id = null;
         }
-       
-       
+              
         return view('user.edit')
                   ->with(['user' => $user,
                           'city_values' => $city_values,
@@ -288,8 +287,6 @@ class UserController extends Controller
         $adlang = $user->getAddLang();
         
         $this->validate($request, [
-//            'first_name_'.$prlang  => 'string|required_without_all:first_name_'.$prlang.',first_name_'.$adlang.'',
-//            'first_name_'.$adlang  => 'string|required_without_all:first_name_'.$prlang.',first_name_'.$adlang.'',
             'first_name_'.$prlang  => 'required|string|max:191',
             'last_name_'.$prlang  => 'required|string|max:191',
             'affil_'.$prlang  => 'required|string|max:255',
@@ -461,26 +458,27 @@ class UserController extends Controller
      */
     public function citiesList(Request $request)
     {
-        $locale = LaravelLocalization::getCurrentLocale();
+//        $locale = LaravelLocalization::getCurrentLocale();
         
         $search_name = '%'.$request->input('q').'%';
         $country_id = (int)$request->input('country_id');
         $region_id = (int)$request->input('region_id');
-        $field_name = 'name_'.$locale;
+//        $field_name = 'name_'.$locale;
         
         $all_cities = [];
-        $cities = City::where('country_id',$country_id)
+        $cities = City::getList($country_id, $region_id, $search_name);
+                /*City::where('country_id',$country_id)
                        ->where($field_name,'like', $search_name);
         
         if ($region_id) {
             $cities = $cities -> where('region_id',$region_id);
         }
         
-        $cities = $cities ->orderBy($field_name)->get();
+        $cities = $cities ->orderBy($field_name)->get();*/
         
-        foreach ($cities as $city) {
-            $all_cities[]=['id'  => $city->id, 
-                           'text'=> $city->{$field_name}];
+        foreach ($cities as $city_id => $city_name) {
+            $all_cities[]=['id'  => $city_id, 
+                           'text'=> $city_name];
         }  
 
         return Response::json($all_cities);
@@ -494,20 +492,22 @@ class UserController extends Controller
      */
     public function regionsList(Request $request)
     {
-        $locale = LaravelLocalization::getCurrentLocale();
+//        $locale = LaravelLocalization::getCurrentLocale();
         
         $search_name = '%'.$request->input('q').'%';
         $country_id = (int)$request->input('country_id');
-        $field_name = 'name_'.$locale;
+//        $field_name = 'name_'.$locale;
         
         $all_regions = [];
-        $regions = Region::where('country_id',$country_id)
+        $regions = Region::getList($country_id, $search_name);
+//        dd($regions);
+                /*Region::where('country_id',$country_id)
                        ->where($field_name,'like', $search_name)
-                       ->orderBy($field_name)->get();
+                       ->orderBy($field_name)->get();*/
         
-        foreach ($regions as $region) {
-            $all_regions[]=['id'  => $region->id, 
-                            'text'=> $region->{$field_name}];
+        foreach ($regions as $region_id => $region_name) {
+            $all_regions[]=['id'  => $region_id, 
+                            'text'=> $region_name];
         }  
 
         return Response::json($all_regions);
