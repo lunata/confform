@@ -18,10 +18,17 @@
 @section('footScriptExtra')
     {!!Html::script('js/bootstrap-datepicker.min.js')!!}
     {!!Html::script('js/bootstrap-datepicker.ru.min.js')!!}
+    <script src="{{ asset('/js/ckeditor/ckeditor.js') }}" type="text/javascript" charset="utf-8" ></script>
     {!!Html::script('js/select2.min.js')!!}
 @stop
 
 @section('jqueryFunc')
+    var editor = CKEDITOR.replace( 'editor1',{
+                language: '{{$locale}}',
+                customConfig: '/js/ckeditor-config.js'
+                 
+        });
+    
     $('#started_at').datepicker({
         format: "yyyy-mm-dd",
         language: "{{$locale}}",

@@ -121,15 +121,6 @@ class Event extends Model
         return join(', ', $place);
     }
          
-    /** Gets dates of this event
-     * 
-     * @return String
-     */
-    public function getDatesAttribute()
-    {
-        return self::getDateRange($this->started_at, $this->finished_at);
-    }
-         
     /** Gets date range
      * 
      * @param Date $started_at
@@ -205,6 +196,33 @@ class Event extends Model
             return $d1.$m1.$y1.$div.$d2.$m2.$y2;
         }
         return $m1.$d1.$y1.$div.$d2.$m2.$y2;
+    }
+         
+    /** Gets dates of this event
+     * 
+     * @return String
+     */
+    public function getDatesAttribute()
+    {
+        return self::getDateRange($this->started_at, $this->finished_at);
+    }
+         
+    /** Gets registration dates of this event
+     * 
+     * @return String
+     */
+    public function getRegistrDatesAttribute()
+    {
+        return self::getDateRange($this->registr_start, $this->registr_finish);
+    }
+         
+    /** Gets material accepting dates of this event
+     * 
+     * @return String
+     */
+    public function getMaterialDatesAttribute()
+    {
+        return self::getDateRange($this->material_start, $this->material_finish);
     }
          
     /**

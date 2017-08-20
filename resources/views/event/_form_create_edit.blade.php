@@ -1,6 +1,6 @@
         @include('widgets.form._url_args_by_post',['url_args'=>$url_args])
         
-        @include('user._form_transl_fields',
+        @include('widgets.form._form_transl_fields',
                 ['translated_fields'=>$event->getTranslatedFields(),
                  'lang_dir' => 'event',
                  'prim_lang' => $event->prim_lang,
@@ -48,7 +48,7 @@
         ])
         @include('widgets.form._formitem_select',
                 ['name' => 'status',
-                 'title' => trans('event.status'),
+                 'title' => trans('messages.status'),
                  'value' => $event->status,
                  'values' => $event->getStatusList()
         ])
@@ -82,5 +82,6 @@
         ])
     </div>
 </div>
+        @include('event._form_edit_pages')
         @include('widgets.form._formitem_btn_submit', ['title' => $submit_title])
                  

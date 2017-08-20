@@ -28,7 +28,7 @@
     </div>
 </div>
                  
-        @include('user._form_transl_fields',
+        @include('widgets.form._form_transl_fields',
                 ['translated_fields'=>$user->getTranslatedFields(),
                  'prim_lang' => $user->getPrimLang(),
                  'add_lang' => $user->getAddLang()])

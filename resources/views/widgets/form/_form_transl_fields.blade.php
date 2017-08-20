@@ -1,9 +1,12 @@
 <?php
+    if (!isset($is_ignore_add_lang_fields)) {
+        $is_ignore_add_lang_fields = false;
+    }
     if (!isset($lang_dir)) {
         $lang_dir = 'user';
     }
 ?>
-    @if ($locale == $add_lang)
+    @if (!$is_ignore_add_lang_fields || $locale == $add_lang)
 <div class="row">   
     <div class="col col-sm-6">
     @endif
@@ -14,7 +17,7 @@
                             ? trans($lang_dir.'.'.$field).' ('.trans('messages.in_'.$prim_lang).')' 
                             : trans($lang_dir.'.'.$field)])
         @endforeach         
-    @if ($locale == $add_lang)
+    @if (!$is_ignore_add_lang_fields || $locale == $add_lang)
     </div>
     <div class="col col-sm-6">
         @foreach ($translated_fields as $field)

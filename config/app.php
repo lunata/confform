@@ -182,6 +182,8 @@ return [
         // Confform\Providers\BroadcastServiceProvider::class,
         Confform\Providers\EventServiceProvider::class,
         Confform\Providers\RouteServiceProvider::class,
+        
+        Barryvdh\Elfinder\ElfinderServiceProvider::class // file uploader
 
     ],
 

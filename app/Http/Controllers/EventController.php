@@ -153,8 +153,7 @@ class EventController extends Controller
         $event -> fill($input);
         $event -> save();
          
-        return Redirect::to('/event/?'.($this->args_by_get))
-//        return Redirect::to('/event/'.($event->id).($this->args_by_get))
+        return Redirect::to('/event/'.($event->id).($this->args_by_get))
             ->withSuccess(\Lang::get('messages.created_success'));        
     }
 
@@ -166,7 +165,13 @@ class EventController extends Controller
      */
     public function show($id)
     {
-        //
+        $event = Event::find($id); 
+        return view('event.show')
+                  ->with(['event' => $event,
+//                          'locale' => $locale,
+                          'args_by_get'    => $this->args_by_get,
+                          'url_args'       => $this->url_args,
+                         ]);
     }
 
     /**
@@ -234,8 +239,7 @@ class EventController extends Controller
         $event -> fill($input);
         $event -> save();
          
-        return Redirect::to('/event/?'.($this->args_by_get))
-//        return Redirect::to('/event/'.($event->id).($this->args_by_get))
+        return Redirect::to('/event/'.($event->id).($this->args_by_get))
             ->withSuccess(\Lang::get('messages.created_success'));        
     }
 

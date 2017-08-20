@@ -42,6 +42,7 @@ return [
     'seq_num' => 's/n',
     'sequence_number' => 'sequence number',
     'show_by' => 'by',
+    'status' => 'Status',
     'to' => 'to',
     'total' => 'total',
     'translation' => 'Translation',

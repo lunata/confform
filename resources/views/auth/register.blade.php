@@ -46,7 +46,8 @@
     </div>
 </div>                 
  
-    @include('user._form_transl_fields')
+    @include('widgets.form._form_transl_fields', 
+             ['is_ignore_add_lang_fields' => true])
 
 <div class="row">   
     <div class="col col-sm-6">
