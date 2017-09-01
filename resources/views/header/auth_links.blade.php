@@ -8,13 +8,13 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/profile') }}"><i class="fa fa-btn fa-user"></i>{{ trans('navigation.profile') }}</a></li>
                                 @if (Confform\User::checkAccess('event.*'))
-                                <li><a href="{{ url('/event') }}"><i class="fa fa-btn fa-handshake-o"></i>{{ trans('navigation.event_list') }}</a></li>
+                                <li><a href="{{ url('/admin/event') }}"><i class="fa fa-btn fa-handshake-o"></i>{{ trans('navigation.event_list') }}</a></li>
                                 @endif
                                 @if (Confform\User::checkAccess('user.view'))
-                                <li><a href="{{ url('/user') }}"><i class="fa fa-btn fa-users"></i>{{ trans('navigation.users') }}</a></li>
+                                <li><a href="{{ url('/admin/user') }}"><i class="fa fa-btn fa-users"></i>{{ trans('navigation.users') }}</a></li>
                                 @endif
                                 @if (Confform\User::checkAccess('role'))
-                                <li><a href="{{ url('/role') }}"><i class="fa fa-btn fa-briefcase"></i>{{ trans('navigation.roles') }}</a></li>
+                                <li><a href="{{ url('/admin/role') }}"><i class="fa fa-btn fa-briefcase"></i>{{ trans('navigation.roles') }}</a></li>
                                 @endif
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>{{ trans('navigation.logout') }}</a></li>
                             </ul>

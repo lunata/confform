@@ -40,7 +40,7 @@
             <tr>
                 <td>{{ $list_count++ }}</td>
                 <td>{{$user->email}}</td>
-                <td>{{$user->name}}</td>
+                <td>{{$user->full_name}}</td>
                 <td>{{$user->place}}</td>
                 <td>{{$user->permissionString()}}</td>
                 <td>{{$user->rolesNames()}}</td>

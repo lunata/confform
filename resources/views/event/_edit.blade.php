@@ -1,7 +1,7 @@
         <h2>{{ trans('messages.editing')}} {{ trans('event.of_event')}} "{{ $event->title}}"</h2>
         <p>
-            <a href="{{ LaravelLocalization::localizeURL('/event/'.$event->id) }}{{$args_by_get}}">{{ trans('messages.back_to_show') }}</a> 
-            | <a href="{{ LaravelLocalization::localizeURL('/event') }}">
+            <a href="{{ LaravelLocalization::localizeURL('/admin/event/'.$event->id) }}?{{$args_by_get}}">{{ trans('messages.back_to_show') }}</a> 
+            | <a href="{{ LaravelLocalization::localizeURL('/admin/event') }}">
                 {{ trans('messages.back_to_list') }}</a>
         </p>
         

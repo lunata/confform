@@ -16,7 +16,7 @@
 
         <p>
         @if (User::checkAccess('event.create'))
-            <a href="{{ LaravelLocalization::localizeURL('/event/create') }}">
+            <a href="{{ LaravelLocalization::localizeURL('/admin/event/create') }}">
         @endif
             {{ trans('messages.create_new_g') }}
         @if (User::checkAccess('event.create'))
@@ -48,14 +48,14 @@
             @foreach($events as $event)
             <tr>
                 <td>{{ $list_count++ }}</td>
-                <td><a href="event/{{$event->id}}?{{$args_by_get}}">{{$event->title}}</a></td>
+                <td><a href="{{ LaravelLocalization::localizeURL('/admin/event/'.$event->id.'?'.$args_by_get)}}">{{$event->title}}</a></td>
                 <td>{{$event->place}}</td>
                 <td>{{$event->dates}}</td>
             @if (Confform\User::checkAccess('event.update'))
                 <td>
                     @include('widgets.form._button_edit', 
                             ['is_button'=>true, 
-                             'route' => '/event/'.$event->id.'/edit'])
+                             'route' => '/admin/event/'.$event->id.'/edit'])
                 </td>
                 @endif
                 @if (Confform\User::checkAccess('event.delete'))                

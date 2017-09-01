@@ -153,7 +153,7 @@ class EventController extends Controller
         $event -> fill($input);
         $event -> save();
          
-        return Redirect::to('/event/'.($event->id).($this->args_by_get))
+        return Redirect::to('/admin/event/'.($event->id).($this->args_by_get))
             ->withSuccess(\Lang::get('messages.created_success'));        
     }
 
@@ -239,7 +239,7 @@ class EventController extends Controller
         $event -> fill($input);
         $event -> save();
          
-        return Redirect::to('/event/'.($event->id).($this->args_by_get))
+        return Redirect::to('/admin/event/'.($event->id).($this->args_by_get))
             ->withSuccess(\Lang::get('messages.created_success'));        
     }
 
@@ -253,4 +253,26 @@ class EventController extends Controller
     {
         //
     }
+    
+    /**
+     * Shows history of event.
+     *
+     * @param  int  $id - ID of event
+     * @return \Illuminate\Http\Response
+     */
+    public function history($id)
+    {
+        $event = Event::find($id);
+        if (!$event) {
+            return Redirect::to('/admin/event/'.($this->args_by_get))
+                           ->withErrors(\Lang::get('messages.record_not_exists'));
+        }
+//dd($event->revisionHistory);        
+        return view('event.history')
+                  ->with(['event'       => $event,
+                          'args_by_get' => $this->args_by_get,
+                          'url_args'    => $this->url_args,
+                         ]);
+    }
+    
 }

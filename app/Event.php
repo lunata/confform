@@ -28,7 +28,17 @@ class Event extends Model
     protected $revisionCleanup = true; //Remove old revisions (works only when used with $historyLimit)
     protected $historyLimit = 500; //Stop tracking revisions after 500 changes have been made.
     protected $revisionCreationsEnabled = true; // By default the creation of a new model is not stored as a revision. Only subsequent changes to a model is stored.
-
+    protected $revisionFormattedFields = array(
+//        'title'  => 'string:<strong>%s</strong>',
+//        'public' => 'boolean:No|Yes',
+        'modified' => 'datetime:m/d/Y g:i A',
+        'deleted_at' => 'isEmpty:Active|Deleted'
+    );
+    protected $revisionFormattedFieldNames = array(
+//        'title' => 'Title',
+//        'small_name' => 'Nickname',
+        'deleted_at' => 'Deleted At'
+    );
     public static function boot()
     {
         parent::boot();
@@ -46,6 +56,18 @@ class Event extends Model
                 $this->fillable[] = $f.'_'.$lang;
             }
         }
+        
+        $revisionFormattedFieldNames = [
+            'title_en' => \Lang::get('event.title'). ' ('.\Lang::get('messages.in_en').')',
+            'title_ru' => \Lang::get('event.title'). ' ('.\Lang::get('messages.in_ru').')',
+            'started_at' => \Lang::get('event.started_at'),
+            'finished_at' => \Lang::get('event.finished_at'),
+            'registr_start' => \Lang::get('event.registr_start'),
+            'registr_finish' => \Lang::get('event.registr_finish'),
+            'material_start' => \Lang::get('event.material_start'),
+            'material_finish' => \Lang::get('event.material_finish'),
+        ];
+        $this->revisionFormattedFieldNames = $revisionFormattedFieldNames;
     }
     
     // Event __belongs_to__ Country

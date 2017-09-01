@@ -183,8 +183,8 @@ return [
         Confform\Providers\EventServiceProvider::class,
         Confform\Providers\RouteServiceProvider::class,
         
-        Barryvdh\Elfinder\ElfinderServiceProvider::class // file uploader
-
+        Barryvdh\Elfinder\ElfinderServiceProvider::class, // file uploader
+        Dimsav\Translatable\TranslatableServiceProvider::class // translatable
     ],
 
     /*

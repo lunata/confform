@@ -98,11 +98,29 @@ class User extends EloquentUser
         return $this->translated_fields;
     }
 
-    /** Gets name of this user
+    /** Gets brief name of this user
      * 
      * @return String
      */
     public function getNameAttribute()
+    {
+        $first_name = $this->first_name;
+        if ($first_name) {
+            $first_name = mb_substr($first_name,0,1).'.';
+        }  
+        
+        $middle_name = $this->middle_name;
+        if ($middle_name) {
+            $middle_name = mb_substr($middle_name,0,1).'.';
+        }  
+        return $first_name . $middle_name. ' '. $this->last_name;
+    }
+         
+    /** Gets full name of this user
+     * 
+     * @return String
+     */
+    public function getFullNameAttribute()
     {
         return $this->first_name . ' '. $this->middle_name. ' '. $this->last_name;
     }

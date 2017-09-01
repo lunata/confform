@@ -10,6 +10,7 @@
         "barryvdh/laravel-debugbar": "^2.4",
         "barryvdh/laravel-elfinder": "^0.3.10",
         "cartalyst/sentinel": "2.0.*",
+        "dimsav/laravel-translatable": "^7.3",
         "doctrine/dbal": "^2.5",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",

@@ -8,9 +8,9 @@
 @stop
 
 @section('content')
-        <h2>{{ trans('navigation.event_list') }}</h2>
+        <h1>{{ trans('navigation.event_list') }}</h1>
         <p>
-            <a href="{{ LaravelLocalization::localizeURL('/event') }}">
+            <a href="{{ LaravelLocalization::localizeURL('/admin/event') }}">
                 {{ trans('messages.back_to_list') }}</a>
         @if (User::checkAccess('event.delete'))
             | @include('widgets.form._button_delete', 
@@ -18,19 +18,19 @@
                         'id' => $event->id]) 
         @endif
 
-            | <a href="/event/{{ $event->id }}/history{{$args_by_get}}">{{ trans('messages.history') }}</a>
+            | <a href="/admin/event/{{ $event->id }}/history?{{$args_by_get}}">{{ trans('messages.history') }}</a>
         </p>
-        <h3>
+        <h2>
             {{ $event->title}}
             @if (User::checkAccess('event.update'))
                 @include('widgets.form._button_edit', 
-                         ['route' => '/event/'.$event->id.'/edit',
+                         ['route' => '/admin/event/'.$event->id.'/edit',
                           'without_text' => 1])
             @endif
 
-        </h3>
-        <h4>{{$event->dates}}</h4>
-        <h4>{{$event->place}}</h4>
+        </h2>
+        <h3>{{$event->dates}}</h3>
+        <h3>{{$event->place}}</h3>
         
         <p><b>{{trans('messages.status')}}</b>: {{trans('event.status'.$event->status)}}</p>
         
@@ -42,6 +42,7 @@
         <p><b>{{trans('event.registr_access')}}</b>: {{$event->registr_dates}}</p>
         <p><b>{{trans('event.material_accept')}}</b>: {{$event->material_dates}}</p>
         
+        include('page._tree)
 @stop
 
 @section('footScriptExtra')

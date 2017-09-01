@@ -20,8 +20,8 @@ Route::group( [ 'prefix' => LaravelLocalization::setLocale(),
             return view('welcome');
         });
         
-        Route::get('captcha-form-validation',array('as'=>'google.get-recaptcha-validation-form','uses'=>'FileController@getCaptchaForm')) ;
-        Route::post('captcha-form-validation',array('as'=>'google.post-recaptcha-validation','uses'=>'FileController@postCaptchaForm')) ;
+//        Route::get('captcha-form-validation',array('as'=>'google.get-recaptcha-validation-form','uses'=>'FileController@getCaptchaForm')) ;
+//        Route::post('captcha-form-validation',array('as'=>'google.post-recaptcha-validation','uses'=>'FileController@postCaptchaForm')) ;
 
         // Вызов страницы регистрации пользователя
         Route::get('register', 'AuthController@register');   
@@ -56,19 +56,28 @@ Route::group( [ 'prefix' => LaravelLocalization::setLocale(),
         Route::get('user/city_list', 'UserController@citiesList');
         Route::get('user/region_list', 'UserController@regionsList');
 
-        Route::resource('event', 'EventController',
-                       ['names' => ['update' => 'event.update',
-                                    'store' => 'event.store',
-                                    'destroy' => 'event.destroy']]);
-                
-        Route::resource('role', 'RoleController',
-                       ['names' => ['update' => 'role.update',
-                                    'store' => 'role.store',
-                                    'destroy' => 'role.destroy']]);
-                
-        Route::resource('user', 'UserController',
-                       ['names' => ['update' => 'user.update',
-                                    'destroy' => 'user.destroy']]);       
+        Route::group( [ 'prefix' => 'admin'//,
+               // 'middleware' => [ 'auth' ]
+            ],
+            function()
+            {
+                Route::get('event/{id}/history', 'EventController@history');
+        
+                Route::resource('event', 'EventController',
+                               ['names' => ['update' => 'event.update',
+                                            'store' => 'event.store',
+                                            'destroy' => 'event.destroy']]);
+
+                Route::resource('role', 'RoleController',
+                               ['names' => ['update' => 'role.update',
+                                            'store' => 'role.store',
+                                            'destroy' => 'role.destroy']]);
+
+                Route::resource('user', 'UserController',
+                               ['names' => ['update' => 'user.update',
+                                            'destroy' => 'user.destroy']]);       
+                    }
+        );
     }
 );
 

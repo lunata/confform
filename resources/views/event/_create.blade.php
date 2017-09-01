@@ -1,6 +1,6 @@
         <h3>{{ trans('messages.creating')}} {{ trans('event.of_event')}}</h3>
         <p>
-            <a href="{{ LaravelLocalization::localizeURL('/event') }}">
+            <a href="{{ LaravelLocalization::localizeURL('/admin/event') }}">
                 {{ trans('messages.back_to_list') }}</a>
         </p>
         
