@@ -42,7 +42,7 @@
         <p><b>{{trans('event.registr_access')}}</b>: {{$event->registr_dates}}</p>
         <p><b>{{trans('event.material_accept')}}</b>: {{$event->material_dates}}</p>
         
-        include('page._tree)
+        @include('page._tree',['event_id'=>$event->id])
 @stop
 
 @section('footScriptExtra')

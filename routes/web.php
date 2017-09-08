@@ -62,11 +62,18 @@ Route::group( [ 'prefix' => LaravelLocalization::setLocale(),
             function()
             {
                 Route::get('event/{id}/history', 'EventController@history');
+                Route::get('event/{event_id}/page/create', 'PageController@create');
         
                 Route::resource('event', 'EventController',
                                ['names' => ['update' => 'event.update',
                                             'store' => 'event.store',
                                             'destroy' => 'event.destroy']]);
+
+                Route::resource('page', 'PageController',
+                               ['names' => ['update' => 'page.update',
+                                            'store' => 'page.store',
+                                            'destroy' => 'page.destroy']]);
+
 
                 Route::resource('role', 'RoleController',
                                ['names' => ['update' => 'role.update',
